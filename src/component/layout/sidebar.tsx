@@ -41,7 +41,11 @@ export default function Sidebar() {
   const [dropdownOpen, setDropdownOpen] = useState<{ [key: string]: boolean }>({})
   const pathname = usePathname()
 
-  const toggleDropdown = (itemName: string) => {
+  const toggleDropdown = (itemName: string, e: React.MouseEvent) => {
+    // Prevent event bubbling to avoid triggering the link
+    e.preventDefault()
+    e.stopPropagation()
+    
     setDropdownOpen((prev: { [key: string]: boolean }) => ({
       ...prev,
       [itemName]: !prev[itemName]
@@ -91,26 +95,35 @@ export default function Sidebar() {
                 <div key={item.name}>
                   {/* Main navigation item */}
                   {hasDropdown ? (
-                    <button
-                      onClick={() => toggleDropdown(item.name)}
-                      className={`
-                        w-full flex items-center justify-between px-4 py-3 text-sm font-medium rounded-lg transition-colors
-                        ${isActive 
-                          ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' 
-                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                        }
-                      `}
-                    >
-                      <div className="flex items-center">
-                        <Icon className="mr-3 h-5 w-5" />
-                        {item.name}
-                      </div>
-                      {isDropdownOpen ? (
-                        <ChevronDown className="h-4 w-4" />
-                      ) : (
-                        <ChevronRight className="h-4 w-4" />
-                      )}
-                    </button>
+                    <div className="relative">
+                      <Link
+                        href={item.href}
+                        className={`
+                          flex items-center justify-between px-4 py-3 text-sm font-medium rounded-lg transition-colors w-full
+                          ${isActive 
+                            ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' 
+                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                          }
+                        `}
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <div className="flex items-center">
+                          <Icon className="mr-3 h-5 w-5" />
+                          {item.name}
+                        </div>
+                        <button
+                          onClick={(e) => toggleDropdown(item.name, e)}
+                          className="p-1 rounded hover:bg-gray-200 transition-colors"
+                          aria-label={`Toggle ${item.name} submenu`}
+                        >
+                          {isDropdownOpen ? (
+                            <ChevronDown className="h-4 w-4" />
+                          ) : (
+                            <ChevronRight className="h-4 w-4" />
+                          )}
+                        </button>
+                      </Link>
+                    </div>
                   ) : (
                     <Link
                       href={item.href}
