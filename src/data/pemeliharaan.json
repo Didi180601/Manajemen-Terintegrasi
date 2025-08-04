@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "kapal_id": 1,
+    "jenis": "Engine",
+    "keterangan": "Servis rutin mesin",
+    "tanggal_jadwal": "2025-02-15",
+    "biaya": 2000000,
+    "status": "scheduled"
+  },
+  {
+    "id": 2,
+    "kapal_id": 2,
+    "jenis": "Hull",
+    "keterangan": "Inspeksi badan kapal",
+    "tanggal_jadwal": "2025-02-20",
+    "biaya": 1500000,
+    "status": "scheduled"
+  },
+  {
+    "id": 3,
+    "kapal_id": 3,
+    "jenis": "Engine",
+    "keterangan": "Perbaikan mesin utama",
+    "tanggal_jadwal": "2025-01-25",
+    "biaya": 5000000,
+    "status": "in_progress"
+  }
+]

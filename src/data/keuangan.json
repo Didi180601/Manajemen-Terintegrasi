@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "tanggal": "2025-01-15",
+    "jenis": "pemasukan",
+    "jumlah": 25000000,
+    "keterangan": "Hasil penjualan ikan",
+    "kapal_id": 1
+  },
+  {
+    "id": 2,
+    "tanggal": "2025-01-10",
+    "jenis": "pengeluaran",
+    "jumlah": 5000000,
+    "keterangan": "Beli bahan bakar",
+    "kapal_id": 1
+  },
+  {
+    "id": 3,
+    "tanggal": "2025-01-12",
+    "jenis": "pemasukan",
+    "jumlah": 18000000,
+    "keterangan": "Hasil penjualan ikan",
+    "kapal_id": 2
+  },
+  {
+    "id": 4,
+    "tanggal": "2025-01-08",
+    "jenis": "pengeluaran",
+    "jumlah": 3000000,
+    "keterangan": "Gaji ABK",
+    "kapal_id": 2
+  }
+]

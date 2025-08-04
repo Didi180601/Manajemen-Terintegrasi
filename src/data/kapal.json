@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "nama": "Sinar Jaya",
+    "nomor_registrasi": "SJ001",
+    "kapasitas": 50,
+    "status": "aktif",
+    "tahun_buat": 2018,
+    "jenis": "Kapal Ikan"
+  },
+  {
+    "id": 2,
+    "nama": "Bahari Indah",
+    "nomor_registrasi": "BI002",
+    "kapasitas": 40,
+    "status": "aktif",
+    "tahun_buat": 2020,
+    "jenis": "Kapal Ikan"
+  },
+  {
+    "id": 3,
+    "nama": "Samudra Biru",
+    "nomor_registrasi": "SB003",
+    "kapasitas": 60,
+    "status": "maintenance",
+    "tahun_buat": 2017,
+    "jenis": "Kapal Ikan"
+  }
+]
