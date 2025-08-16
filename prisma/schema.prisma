@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url  	    = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model Gaji {
+  id             String       @id @default(cuid())
+  namaAbk        String
+  bonusHarian    Float        @default(0)
+  potongan       Float        @default(0)
+  totalBerat     Float
+  totalNilaiIkan Float
+  totalGajiIkan  Float
+  gajiBruto      Float
+  gajiBersih     Float
+  tanggal        DateTime
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  
+  // Relasi dengan detail ikan
+  detailIkan     DetailIkan[]
+  
+  @@map("gaji")
+}
+
+model DetailIkan {
+  id         String   @id @default(cuid())
+  gajiId     String   // Foreign key ke tabel Gaji
+  namaIkan   String
+  berat      Float
+  hargaPerKg Float
+  gajiPerKg  Float
+  totalNilai Float    // berat * hargaPerKg
+  totalGaji  Float    // berat * gajiPerKg
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  
+  // Relasi dengan tabel Gaji
+  gaji       Gaji     @relation(fields: [gajiId], references: [id], onDelete: Cascade)
+  
+  @@map("detail_ikan")
+}
