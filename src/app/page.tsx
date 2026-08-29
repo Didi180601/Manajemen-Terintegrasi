@@ -1,12 +1,14 @@
 import { Ship, Users, DollarSign, Wrench } from 'lucide-react'
 import Card from '@/component/ui/card'
-import { getKapalCount, getAbkCount, getKeuanganSummary, getMaintenanceCount } from '@/utils/dataHelpers'
+import {DashboardService} from '@/lib/database'
+import {formatDate} from '@/utils/format'
 
-export default function Dashboard() {
-  const kapalCount = getKapalCount()
-  const abkCount = getAbkCount()
-  const keuanganSummary = getKeuanganSummary()
-  const maintenanceCount = getMaintenanceCount()
+export default async function Dashboard() {
+  const kapalCount = await DashboardService.getKapalCount()
+  const abkCount = await DashboardService.getAbkCount()
+  const keuanganSummary = await DashboardService.getKeuanganSummary()
+  const maintenanceCount = await DashboardService.getMaintenanceCount()
+  const recentActivities = await DashboardService.getRecentActivities(5)
 
   return (
     <div className="space-y-6">
@@ -45,9 +47,9 @@ export default function Dashboard() {
             <div className="p-3 bg-yellow-500 rounded-full">
               <DollarSign className="h-6 w-6 text-white" />
             </div>
-            <div className="ml-4">
+            <div className="ml-4 min-w-0">
               <p className="text-sm font-medium text-gray-600">Keuntungan</p>
-              <p className="text-2xl font-bold text-yellow-600">
+              <p className="text-2xl font-bold text-yellow-600 truncate">
                 {new Intl.NumberFormat('id-ID', { 
                   style: 'currency', 
                   currency: 'IDR',
@@ -72,21 +74,30 @@ export default function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
+         <Card>
           <h3 className="text-lg font-medium text-gray-900 mb-4">Aktivitas Terbaru</h3>
           <div className="space-y-3">
-            <div className="flex items-center p-3 bg-gray-50 rounded-lg">
-              <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
-              <p className="text-sm text-gray-600">Kapal Sinar Jaya selesai maintenance</p>
-            </div>
-            <div className="flex items-center p-3 bg-gray-50 rounded-lg">
-              <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
-              <p className="text-sm text-gray-600">ABK baru bergabung: Ahmad Rizki</p>
-            </div>
-            <div className="flex items-center p-3 bg-gray-50 rounded-lg">
-              <div className="w-2 h-2 bg-yellow-500 rounded-full mr-3"></div>
-              <p className="text-sm text-gray-600">Pemasukan dari penjualan ikan: Rp 25.000.000</p>
-            </div>
+            {recentActivities.length === 0 ? (
+              <p className="text-sm text-gray-500">Belum ada aktivitas</p>
+            ) : (
+              recentActivities.map((activity) => (
+                <div key={activity.id} className="flex items-center p-3 bg-gray-50 rounded-lg">
+                  <div
+                    className={`w-2 h-2 rounded-full mr-3 ${
+                      activity.type === 'kapal'
+                        ? 'bg-blue-500'
+                        : activity.type === 'abk'
+                          ? 'bg-green-500'
+                          : 'bg-yellow-500'
+                    }`}
+                  />
+                  <div>
+                    <p className="text-sm text-gray-600">{activity.message}</p>
+                    <p className="text-xs text-gray-400">{formatDate(activity.timestamp.toISOString())}</p>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </Card>
 

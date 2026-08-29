@@ -1,6 +1,8 @@
 interface ButtonProps {
   children: React.ReactNode
   onClick?: () => void
+  disabled?: boolean
+  type?:'button' | 'submit' | 'reset'
   variant?: 'primary' | 'secondary' | 'danger'
   size?: 'sm' | 'md' | 'lg'
   className?: string
@@ -9,6 +11,8 @@ interface ButtonProps {
 export default function Button({ 
   children, 
   onClick, 
+  disabled = false,
+  type = 'button',
   variant = 'primary', 
   size = 'md',
   className = ''
@@ -30,6 +34,8 @@ export default function Button({
   return (
     <button
       onClick={onClick}
+      disabled={disabled}
+      type={type}
       className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
     >
       {children}

@@ -1,52 +1,232 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider  = "postgresql"
-  url  	    = env("DATABASE_URL")
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model Kapal {
+  id                   String   @id @default(cuid())
+  nama                 String
+  jenis                String
+  nomorRegistrasi      String   @unique @map("nomor_registrasi")
+  kapasitas            Float
+  status               String   @default("aktif")
+  tahunBuat            DateTime @map("tahun_buat")
+  pemilik              String
+  dimensiPanjang       Float    @map("dimensi_panjang")
+  dimensiLebar         Float    @map("dimensi_lebar")
+  dimensiTinggi        Float    @map("dimensi_tinggi")
+  mesinUtama           String   @map("mesin_utama")
+  dayaMesin            Float    @map("daya_mesin")
+  kecepatanMaksimal    Float    @map("kecepatan_maksimal")
+  bahanBakar           String   @map("bahan_bakar")
+  sertifikatKelaikan   String   @map("sertifikat_kelaikan")
+  tanggalSertifikat    DateTime @map("tanggal_sertifikat")
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  abk                  ABK[]
+  keberangkatan        Keberangkatan[]
+
+  @@map("kapal")
+}
+
+model ABK {
+  id                    String   @id @default(cuid())
+  nama                  String
+  posisi                String
+  kapal_id              String
+  kapal                 Kapal    @relation(fields: [kapal_id], references: [id])
+  tanggal_bergabung     DateTime
+  status                String
+  no_ktp                String   @unique
+  alamat                String
+  no_telepon            String
+  createdAt             DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  gajiHistory           Gaji[]
+  pesertaKeberangkatan  PesertaKeberangkatan[]
+  pinjaman              Pinjaman[]
+
+  @@map("abk")
 }
 
 model Gaji {
-  id             String       @id @default(cuid())
-  namaAbk        String
-  bonusHarian    Float        @default(0)
-  potongan       Float        @default(0)
-  totalBerat     Float
-  totalNilaiIkan Float
-  totalGajiIkan  Float
-  gajiBruto      Float
-  gajiBersih     Float
-  tanggal        DateTime
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-  
-  // Relasi dengan detail ikan
-  detailIkan     DetailIkan[]
-  
+  id               String       @id @default(cuid())
+  abkId            String       @map("abk_id")
+  abk              ABK          @relation(fields: [abkId], references: [id], onDelete: Restrict)
+  keberangkatanId  String?      @map("keberangkatan_id")
+  keberangkatan    Keberangkatan? @relation(fields: [keberangkatanId], references: [id], onDelete: Restrict)
+  bonusHarian      Float        @default(0)
+  potongan         Float        @default(0)
+  totalBerat       Float
+  totalNilaiIkan   Float
+  totalGajiIkan    Float
+  gajiBruto        Float
+  gajiBersih       Float
+  tanggal          DateTime
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  detailIkan       DetailIkan[]
+  potonganPinjaman PotonganPinjaman[]
+
   @@map("gaji")
 }
 
 model DetailIkan {
   id         String   @id @default(cuid())
-  gajiId     String   // Foreign key ke tabel Gaji
+  gajiId     String
   namaIkan   String
   berat      Float
   hargaPerKg Float
   gajiPerKg  Float
-  totalNilai Float    // berat * hargaPerKg
-  totalGaji  Float    // berat * gajiPerKg
+  totalNilai Float
+  totalGaji  Float
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  
-  // Relasi dengan tabel Gaji
+
   gaji       Gaji     @relation(fields: [gajiId], references: [id], onDelete: Cascade)
-  
+
   @@map("detail_ikan")
+}
+
+model Keberangkatan {
+  id                String   @id @default(cuid())
+  kapal_id          String
+  kapal             Kapal    @relation(fields: [kapal_id], references: [id], onDelete: Restrict)
+  tanggalBerangkat  DateTime @map("tanggal_berangkat")
+  tanggalKembali    DateTime? @map("tanggal_kembali")
+  status            String   @default("berlangsung") // berlangsung, selesai, dibatalkan
+
+  peserta           PesertaKeberangkatan[]
+  gaji              Gaji[]
+  solarUsage        SolarKeberangkatan[]
+  biayaLain         BiayaLainKeberangkatan[]
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("keberangkatan")
+}
+
+model PesertaKeberangkatan {
+  id                String   @id @default(cuid())
+  keberangkatanId   String   @map("keberangkatan_id")
+  keberangkatan     Keberangkatan @relation(fields: [keberangkatanId], references: [id], onDelete: Restrict)
+  abkId             String   @map("abk_id")
+  abk               ABK      @relation(fields: [abkId], references: [id], onDelete: Restrict)
+  bekal             Float
+
+  @@unique([keberangkatanId, abkId])
+  @@map("peserta_keberangkatan")
+}
+
+model PengisianSolar {
+  id                String   @id @default(cuid())
+  tanggal           DateTime
+  jumlahLiter       Float    @map("jumlah_liter")
+  hargaPerLiter     Float    @map("harga_per_liter")
+  totalHarga        Float    @map("total_harga")
+  keterangan        String?
+
+  keberangkatan     SolarKeberangkatan[]
+
+  createdAt         DateTime @default(now())
+  @@map("pengisian_solar")
+}
+
+model SolarKeberangkatan {
+  id                String   @id @default(cuid())
+  keberangkatanId   String   @map("keberangkatan_id")
+  keberangkatan     Keberangkatan  @relation(fields: [keberangkatanId], references: [id], onDelete: Restrict)
+  pengisianSolarId  String   @map("pengisian_solar_id")
+  pengisianSolar    PengisianSolar @relation(fields: [pengisianSolarId], references: [id], onDelete: Restrict)
+  porsiBiaya        Float    @map("porsi_biaya")
+
+  @@map("solar_keberangkatan")
+}
+
+model TarifIkan {
+  id          String  @id @default(cuid())
+  posisi      String
+  namaIkan    String  @map("nama_ikan")
+  gajiPerKg   Float   @map("gaji_per_kg")
+
+  @@unique([posisi, namaIkan])
+  @@map("tarif_ikan")
+}
+
+model Pinjaman {
+  id            String   @id @default(cuid())
+  abkId         String   @map("abk_id")
+  abk           ABK      @relation(fields: [abkId], references: [id], onDelete: Restrict)
+  jumlah        Float
+  sisaPinjaman  Float    @map("sisa_pinjaman")
+  tanggal       DateTime
+  keterangan    String?
+  status        String   @default("belum_lunas") // belum_lunas, lunas
+
+  potongan      PotonganPinjaman[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  @@map("pinjaman")
+}
+
+model PotonganPinjaman {
+  id          String   @id @default(cuid())
+  pinjamanId  String   @map("pinjaman_id")
+  pinjaman    Pinjaman @relation(fields: [pinjamanId], references: [id], onDelete: Restrict)
+  gajiId      String   @map("gaji_id")
+  gaji        Gaji     @relation(fields: [gajiId], references: [id], onDelete: Restrict)
+  jumlah      Float
+
+  createdAt   DateTime @default(now())
+  @@map("potongan_pinjaman")
+}
+
+model BiayaLainKeberangkatan {
+  id                String   @id @default(cuid())
+  keberangkatanId   String   @map("keberangkatan_id")
+  keberangkatan     Keberangkatan @relation(fields: [keberangkatanId], references: [id], onDelete: Restrict)
+  deskripsi         String
+  jumlah            Float
+  tanggal           DateTime @default(now())
+
+  @@map("biaya_lain_keberangkatan")
+}
+
+model BiayaOperasional {
+  id              String   @id @default(cuid())
+  tanggal         DateTime
+  kategori        String
+  deskripsi       String
+  jumlah          Float
+  buktiPembayaran String?  @map("bukti_pembayaran")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("biaya_operasional")
+}
+
+model TargetBisnis {
+  id                    String   @id @default(cuid())
+  periode               String
+  targetPendapatan      Float    @map("target_pendapatan")
+  targetKeuntungan      Float    @map("target_keuntungan")
+  targetTangkapan       Float    @map("target_tangkapan")
+  realisasiPendapatan   Float    @default(0) @map("realisasi_pendapatan")
+  realisasiKeuntungan   Float    @default(0) @map("realisasi_keuntungan")
+  realisasiTangkapan    Float    @default(0) @map("realisasi_tangkapan")
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@unique([periode])
+  @@map("target_bisnis")
 }
