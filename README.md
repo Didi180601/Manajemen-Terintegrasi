@@ -400,42 +400,42 @@ Diagram class ini menampilkan struktur sistem secara konseptual, dengan entitas 
 
 ```mermaid
 flowchart LR
-    actor Admin as Admin
-    actor Keuangan as Tim Keuangan
-    actor Kapten as Kapten / Koordinator
+    A((Admin))
+    K((Tim Keuangan))
+    P((Kapten / Koordinator))
 
-    rectangle "Sistem Manajemen Terintegrasi Perikanan" {
-        usecase UC1 as Mengelola data kapal
-        usecase UC2 as Mengelola data ABK
-        usecase UC3 as Menentukan jadwal keberangkatan
-        usecase UC4 as Mengelola peserta keberangkatan
-        usecase UC5 as Merekam konsumsi solar
-        usecase UC6 as Merekam biaya perjalanan
-        usecase UC7 as Mengatur tarif ikan
-        usecase UC8 as Menghitung gaji ABK
-        usecase UC9 as Mengelola pinjaman ABK
-        usecase UC10 as Menampilkan dashboard keuangan
-        usecase UC11 as Menyusun target bisnis
-        usecase UC12 as Melihat laporan dan statistik
-    }
+    subgraph S["Sistem Manajemen Terintegrasi Perikanan"]
+        U1["Mengelola data kapal"]
+        U2["Mengelola data ABK"]
+        U3["Menentukan jadwal keberangkatan"]
+        U4["Mengelola peserta keberangkatan"]
+        U5["Merekam konsumsi solar"]
+        U6["Merekam biaya perjalanan"]
+        U7["Mengatur tarif ikan"]
+        U8["Menghitung gaji ABK"]
+        U9["Mengelola pinjaman ABK"]
+        U10["Menampilkan dashboard keuangan"]
+        U11["Menyusun target bisnis"]
+        U12["Melihat laporan dan statistik"]
+    end
 
-    Admin --> UC1
-    Admin --> UC2
-    Admin --> UC3
-    Admin --> UC4
-    Admin --> UC7
-    Admin --> UC9
-    Admin --> UC11
+    A --> U1
+    A --> U2
+    A --> U3
+    A --> U4
+    A --> U7
+    A --> U9
+    A --> U11
 
-    Keuangan --> UC5
-    Keuangan --> UC6
-    Keuangan --> UC8
-    Keuangan --> UC10
-    Keuangan --> UC12
+    K --> U5
+    K --> U6
+    K --> U8
+    K --> U10
+    K --> U12
 
-    Kapten --> UC3
-    Kapten --> UC4
-    Kapten --> UC12
+    P --> U3
+    P --> U4
+    P --> U12
 ```
 
 ### Interpretasi use case
