@@ -188,7 +188,7 @@ ERD di atas menggambarkan relasi antar entitas utama dalam sistem manajemen peri
 
 ---
 
-## 2. Class Diagram (Formal UML untuk Laporan Skripsi)
+## 2. Class Diagram
 
 ```mermaid
 classDiagram
@@ -395,7 +395,7 @@ Diagram class ini menampilkan struktur sistem secara konseptual, dengan entitas 
 
 ---
 
-## 3. Use Case Diagram (Formal UML)
+## 3. Use Case Diagram
 
 ```mermaid
 flowchart LR
