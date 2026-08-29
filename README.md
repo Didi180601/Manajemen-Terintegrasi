@@ -1,8 +1,8 @@
-﻿# UML Aplikasi Manajemen Terintegrasi
+﻿<!-- # UML Aplikasi Manajemen Terintegrasi
 
-Dokumen ini berisi diagram UML untuk aplikasi manajemen operasional dan keuangan perikanan. Diagram dibuat berdasarkan struktur data, fitur utama, dan alur bisnis yang terdapat di aplikasi ini.
+Dokumen ini berisi diagram UML untuk aplikasi manajemen operasional dan keuangan perikanan. Diagram dibuat berdasarkan struktur data, fitur utama, dan alur bisnis yang terdapat di aplikasi ini. -->
 
-## 1. Overview Aplikasi
+<!-- ## 1. Overview Aplikasi
 
 Aplikasi ini menangani beberapa domain utama:
 
@@ -12,11 +12,11 @@ Aplikasi ini menangani beberapa domain utama:
 - Pengelolaan solar dan biaya operasional
 - Penghitungan gaji berdasarkan tangkapan ikan
 - Manajemen pinjaman ABK
-- Dashboard keuangan dan target bisnis
+- Dashboard keuangan dan target bisnis -->
 
 ---
 
-## 2. Entity Relationship Diagram (ERD)
+## 1. Entity Relationship Diagram (ERD)
 
 ```mermaid
 erDiagram
@@ -175,7 +175,7 @@ erDiagram
     }
 ```
 
-### Penjelasan ERD
+<!-- ### Penjelasan ERD
 
 ERD di atas menggambarkan relasi antar entitas utama dalam sistem manajemen perikanan, yaitu:
 
@@ -184,11 +184,11 @@ ERD di atas menggambarkan relasi antar entitas utama dalam sistem manajemen peri
 - ABK menerima gaji dan dapat memiliki pinjaman
 - Gaji terdiri atas detail tangkapan ikan dan potongan pinjaman
 - Pengisian solar dan biaya lain terkait dengan perjalanan kapal
-- TargetBisnis dan BiayaOperasional mendukung analisis keuangan dan performa bisnis
+- TargetBisnis dan BiayaOperasional mendukung analisis keuangan dan performa bisnis -->
 
 ---
 
-## 3. Class Diagram (Formal UML untuk Laporan Skripsi)
+## 2. Class Diagram (Formal UML untuk Laporan Skripsi)
 
 ```mermaid
 classDiagram
@@ -389,13 +389,13 @@ classDiagram
     Keberangkatan "1" --> "0..*" BiayaLainKeberangkatan
 ```
 
-### Keterangan formal
+<!-- ### Keterangan formal
 
-Diagram class ini menampilkan struktur sistem secara konseptual, dengan entitas utama, relasi antar kelas, dan operasi yang relevan terhadap proses bisnis. Hubungan yang terdefinisi menunjukkan bagaimana data kapal, awak kapal, perjalanan, penggajian, dan keuangan terintegrasi dalam satu sistem.
+Diagram class ini menampilkan struktur sistem secara konseptual, dengan entitas utama, relasi antar kelas, dan operasi yang relevan terhadap proses bisnis. Hubungan yang terdefinisi menunjukkan bagaimana data kapal, awak kapal, perjalanan, penggajian, dan keuangan terintegrasi dalam satu sistem. -->
 
 ---
 
-## 4. Use Case Diagram (Formal UML)
+## 3. Use Case Diagram (Formal UML)
 
 ```mermaid
 flowchart LR
@@ -430,15 +430,15 @@ flowchart LR
     A --> U12
 ```
 
-### Interpretasi use case
+<!-- ### Interpretasi use case
 
-Use case ini menggambarkan bahwa seluruh operasi sistem dilakukan oleh satu aktor utama, yaitu Admin. Berdasarkan kondisi nyata aplikasi, tidak terdapat aktor lain yang memiliki akses ke sistem, sehingga seluruh fungsi operasional, keuangan, dan pelaporan dijalankan oleh admin secara terintegrasi.
+Use case ini menggambarkan bahwa seluruh operasi sistem dilakukan oleh satu aktor utama, yaitu Admin. Berdasarkan kondisi nyata aplikasi, tidak terdapat aktor lain yang memiliki akses ke sistem, sehingga seluruh fungsi operasional, keuangan, dan pelaporan dijalankan oleh admin secara terintegrasi. -->
 
 ---
 
-## 5. Activity Diagram (Formal UML)
+## 4. Activity Diagram
 
-### 5.1 Activity Diagram: Proses Penghitungan Gaji ABK
+### 4.1 Activity Diagram: Proses Penghitungan Gaji ABK
 
 ```mermaid
 flowchart TD
@@ -460,7 +460,7 @@ flowchart TD
     O --> P[End]
 ```
 
-### 5.2 Activity Diagram: Proses Keberangkatan Kapal
+### 4.2 Activity Diagram: Proses Keberangkatan Kapal
 
 ```mermaid
 flowchart TD
@@ -482,7 +482,7 @@ flowchart TD
 
 ---
 
-## 6. Ringkasan Arsitektur Domain
+<!-- ## 6. Ringkasan Arsitektur Domain
 
 Sistem ini terdiri atas tiga domain utama, yaitu:
 
@@ -502,4 +502,4 @@ Diagram UML ini telah disesuaikan dengan model data sebenarnya pada basis data P
 - Collaboration Diagram
 - UML deployment diagram
 - ERD versi formal untuk bab 2 dan 3
-- Diagram relasi database untuk tujuan publikasi ilmiah
+- Diagram relasi database untuk tujuan publikasi ilmiah -->
