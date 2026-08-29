@@ -195,15 +195,14 @@ classDiagram
     class Admin {
         +kelolaKapal()
         +kelolaABK()
+        +kelolaKeberangkatan()
         +kelolaTarifIkan()
-        +kelolaTargetBisnis()
-    }
-
-    class Keuangan {
         +catatSolar()
         +catatBiayaLain()
         +hitungGajiABK()
+        +kelolaPinjamanABK()
         +lihatDashboardKeuangan()
+        +kelolaTargetBisnis()
     }
 
     class Kapal {
@@ -401,8 +400,6 @@ Diagram class ini menampilkan struktur sistem secara konseptual, dengan entitas 
 ```mermaid
 flowchart LR
     A((Admin))
-    K((Tim Keuangan))
-    P((Kapten / Koordinator))
 
     subgraph S["Sistem Manajemen Terintegrasi Perikanan"]
         U1["Mengelola data kapal"]
@@ -423,24 +420,19 @@ flowchart LR
     A --> U2
     A --> U3
     A --> U4
+    A --> U5
+    A --> U6
     A --> U7
+    A --> U8
     A --> U9
+    A --> U10
     A --> U11
-
-    K --> U5
-    K --> U6
-    K --> U8
-    K --> U10
-    K --> U12
-
-    P --> U3
-    P --> U4
-    P --> U12
+    A --> U12
 ```
 
 ### Interpretasi use case
 
-Use case ini menggambarkan interaksi aktor dengan sistem dalam konteks operasional dan keuangan. Aktor utama adalah admin, keuangan, dan kapten. Sistem menyediakan fitur pengelolaan data kapal, anggota awak kapal, keberangkatan, pembiayaan perjalanan, perhitungan gaji, serta pelaporan keuangan dan performa bisnis.
+Use case ini menggambarkan bahwa seluruh operasi sistem dilakukan oleh satu aktor utama, yaitu Admin. Berdasarkan kondisi nyata aplikasi, tidak terdapat aktor lain yang memiliki akses ke sistem, sehingga seluruh fungsi operasional, keuangan, dan pelaporan dijalankan oleh admin secara terintegrasi.
 
 ---
 
